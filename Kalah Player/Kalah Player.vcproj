@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="Kalah Player"
+	Name="KalahPlayer"
 	ProjectGUID="{D9F02F8F-6DDD-475D-8908-68BAC615DC1F}"
 	RootNamespace="KalahPlayer"
 	Keyword="Win32Proj"
