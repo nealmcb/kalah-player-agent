@@ -8,8 +8,6 @@
 
 using namespace std;
 
-#define __KALAH_SYSTEM_DEBUG__
-
 // Game parameters defaults
 const int default_board_size(6);	// Board size - number of houses per player's row
 const int default_stones_in_house(3);	// Initial number of stones per house
@@ -75,38 +73,38 @@ int main(int argc, char **argv)
 		Player2_bad_init = true;
 	
 	// Check whether any player used too much time during construction
-	if(Player1_bad_init || Player2_bad_init)
-	{
-		vector<string> playersNames;
-		playersNames.push_back(p1->getName());
-		playersNames.push_back(p2->getName());
+	//if(Player1_bad_init || Player2_bad_init)
+	//{
+	//	vector<string> playersNames;
+	//	playersNames.push_back(p1->getName());
+	//	playersNames.push_back(p2->getName());
 
-		// Compute game results (premature termination - technical lose)
-		Game::GameRes gameRes;
-		gameRes.players_result.resize(2);
+	//	// Compute game results (premature termination - technical lose)
+	//	Game::GameRes gameRes;
+	//	gameRes.players_result.resize(2);
 
-		if(Player1_bad_init)
-			// Player 1 timeout
-			gameRes.players_result[0] = Game::GameRes::TIMEOUT;
-		else
-			// Player 1 OK, player 2 timeout ==> Player 1 wins
-			gameRes.players_result[0] = Game::GameRes::WIN;
+	//	if(Player1_bad_init)
+	//		// Player 1 timeout
+	//		gameRes.players_result[0] = Game::GameRes::TIMEOUT;
+	//	else
+	//		// Player 1 OK, player 2 timeout ==> Player 1 wins
+	//		gameRes.players_result[0] = Game::GameRes::WIN;
 
-		if(Player2_bad_init)
-			// Player 2 timeout
-			gameRes.players_result[1] = Game::GameRes::TIMEOUT;
-		else
-			// Player 2 OK, player 1 timeout ==> Player 2 wins
-			gameRes.players_result[1] = Game::GameRes::WIN;
+	//	if(Player2_bad_init)
+	//		// Player 2 timeout
+	//		gameRes.players_result[1] = Game::GameRes::TIMEOUT;
+	//	else
+	//		// Player 2 OK, player 1 timeout ==> Player 2 wins
+	//		gameRes.players_result[1] = Game::GameRes::WIN;
 
-		delete p1;
-		delete p2;
+	//	delete p1;
+	//	delete p2;
 
-		// Output game result to the console
-		cout << Game::ResultToString(gameRes, playersNames) << endl;
-		// Exit program
-		return 0;
-	}
+	//	// Output game result to the console
+	//	cout << Game::ResultToString(gameRes, playersNames) << endl;
+	//	// Exit program
+	//	return 0;
+	//}
 
 	// Players' construction went fine, start a game
 	vector<Player*> players;
