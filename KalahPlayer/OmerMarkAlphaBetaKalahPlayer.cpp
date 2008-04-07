@@ -5,6 +5,8 @@
 
 using std::numeric_limits;
 
+#define __OMER_MARK_DEBUG__
+
 /*
  * Performs iterative deepening AlphaBeta.
  */
@@ -20,16 +22,15 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
 			move.m_move = results->move.m_move;
 			delete results;
 			depth++;
-#ifdef __KALAH_SYSTEM_DEBUG__
+#ifdef __OMER_MARK_DEBUG__
 			printf("depth: %d move: %d \n", depth-1, move.m_move);
 #endif
 		}
 	} catch (OmerMarkOutOfTimeException* e) {
-
+#ifdef __OMER_MARK_DEBUG__
 		printf("finito.\n");
 		printf("move: %d \n", move.m_move);
-
-
+#endif
 		delete e;
 	}
 }
