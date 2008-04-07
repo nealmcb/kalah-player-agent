@@ -98,4 +98,4 @@ OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 	return new OmerMarkAlphaBetaResults(bestMove, bestUtility);
 }
 
-const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.001);
+const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.0016);
