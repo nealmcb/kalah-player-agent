@@ -1,8 +1,10 @@
 #include "OmerMarkAlphaBetaKalahPlayer.h"
 #include "OmerMarkOutOfTimeException.h"
 #include <limits>
-#include <stdio.h>
+#include <iostream>
 
+using std::cout;
+using std::endl;
 using std::numeric_limits;
 
 #define __OMER_MARK_DEBUG__
@@ -24,13 +26,13 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
 			delete results;
 			depth++;
 #ifdef __OMER_MARK_DEBUG__
-			printf("depth: %d move: %d \n", depth-1, move.m_move);
+            cout <<"depth: " << depth-1 << ", move: " << move.m_move << endl;
 #endif
 		}
 	} catch (OmerMarkOutOfTimeException* e) {
 #ifdef __OMER_MARK_DEBUG__
-		printf("finito.\n");
-		printf("move: %d \n", move.m_move);
+		cout << "Finito." << endl;
+		cout << "Selected move is: " << move.m_move << endl << endl;
 #endif
 		delete e;
 	}
@@ -39,53 +41,70 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
 OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 	const KalahBoard &board, int depth, Definitions::PlayerColor player, int _alpha, int _beta) 
 {
+    if (depth > 100)
+    {
+        cout << "Something Fishy" <<endl;
+        vector<string> names;
+        names.push_back("A");
+        names.push_back("B");
+        int x = 1000;
+        board.drawBoard(names);
+        cout << "Player is " << player << endl;
+        cout << "Alpha = " << _alpha << endl;
+        cout << "Beta  = " << _beta << endl;
+    }
+
 	if (m_gameTimer.getRemainingMoveTime() < CRITICAL_TIME) {
 		throw new OmerMarkOutOfTimeException();
 	}
 
 	if ((board.getBoardResult() != KalahBoard::NOT_FINAL) || (depth <= 0)) {
-		return new OmerMarkAlphaBetaResults(0, utility(board));
+        return new OmerMarkAlphaBetaResults(0, heuristics->getHeuristics(board, player));
 	}
 
 	int alpha = _alpha;
 	int beta = _beta;
 	int bestMove = 0;
-	int bestUtility;
-	if (player == m_myColor) {
-		bestUtility = numeric_limits<int>::min();
-	} else {
-		bestUtility = numeric_limits<int>::max();
-	}
+    int bestHeuristics = (player == m_myColor) ? numeric_limits<int>::min() : numeric_limits<int>::max();
+	
 
-	for (int i = m_boardSize; i > 0; i--) {
+	for (int i = m_boardSize; i > 0; i--) 
+    {
 		const KalahMove move(i);
-		if (board.isLegalMove(m_myColor, move)) {
+		if (board.isLegalMove(m_myColor, move)) 
+        {
 			KalahBoard *newBoard = new KalahBoard(board);
 			newBoard->makeMove(player, move);
 			
 			OmerMarkAlphaBetaResults *results;
-			if (newBoard->isLastStoneSowedInPlayerStore(player)) {
+			if (newBoard->isLastStoneSowedInPlayerStore(player)) 
+            {
 				results = alphaBetaSearch(*newBoard, depth, player, alpha, beta);
-			} else {
+			} 
+            else 
+            {
 				results = alphaBetaSearch(*newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta);
 			}
 
-			if ((player == m_myColor) && (results->utility > bestUtility)) {
-				bestUtility = results->utility;
+            if ((player == m_myColor) && (results->heuristicsVal > bestHeuristics)) 
+            {
+				bestHeuristics = results->heuristicsVal;
 				bestMove = i;
-				if (alpha < bestUtility) {
-					alpha = bestUtility;
+				if (alpha < bestHeuristics) {
+					alpha = bestHeuristics;
 				}
-				if (beta <= bestUtility) {
+				if (beta <= bestHeuristics) {
 					break;
 				}
-			} else if ((player != m_myColor) && (results->utility < bestUtility)) {
-				bestUtility = results->utility;
+			}             
+            else if ((player != m_myColor) && (results->heuristicsVal < bestHeuristics)) 
+            {
+				bestHeuristics = results->heuristicsVal;
 				bestMove = i;
-				if (beta > bestUtility) {
-					beta = bestUtility;
+				if (beta > bestHeuristics) {
+					beta = bestHeuristics;
 				}
-				if (alpha >= bestUtility) {
+				if (alpha >= bestHeuristics) {
 					break;
 				}
 			}
@@ -95,7 +114,7 @@ OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 		}
 	}
 
-	return new OmerMarkAlphaBetaResults(bestMove, bestUtility);
+	return new OmerMarkAlphaBetaResults(bestMove, bestHeuristics);
 }
 
 const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.0016);
