@@ -4,9 +4,13 @@
 class OmerMarkAlphaBetaResults
 {
 public:
-	OmerMarkAlphaBetaResults(int _move, int _utility) : move(_move), utility(_utility) {}
-	KalahMove move;
-	int utility;
+    // Constructors/Destructors
+	OmerMarkAlphaBetaResults(int _move, int _heuristicsVal) : move(_move), heuristicsVal(_heuristicsVal) {}
+    ~OmerMarkAlphaBetaResults() {}
+
+
+    KalahMove   move;
+	int         heuristicsVal;
 };
 
 #endif
