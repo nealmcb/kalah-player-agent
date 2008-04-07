@@ -1,6 +1,7 @@
 #include "Definitions.h"
 #include "KalahGame.h"
 #include "RandomKalahPlayer.h"
+#include "OmerMarkSimpleKalahPlayer.h"
 #include "GameTimer.h"
 
 #include <iostream>
@@ -59,8 +60,7 @@ int main(int argc, char **argv)
 	// Constructing first player
 	// It is white and will play first
 	init_timer.startMoveTimer();
-	Player *p1 = new RandomKalahPlayer(Definitions::WHITE, tp);
-	(dynamic_cast<RandomKalahPlayer*>(p1))->setName("Shalgi");
+	Player *p1 = new OmerMarkSimpleKalahPlayer(Definitions::WHITE, tp);
 	if(init_timer.isMoveTimePassed())
 		Player1_bad_init = true;
 
@@ -68,43 +68,43 @@ int main(int argc, char **argv)
 	// It is black and will play second
 	init_timer.startMoveTimer();
 	Player *p2 = new RandomKalahPlayer(Definitions::BLACK, tp);
-	(dynamic_cast<RandomKalahPlayer*>(p2))->setName("Hoomi");
+	(dynamic_cast<RandomKalahPlayer*>(p2))->setName("Random");
 	if(init_timer.isMoveTimePassed())
 		Player2_bad_init = true;
 	
 	// Check whether any player used too much time during construction
-	//if(Player1_bad_init || Player2_bad_init)
-	//{
-	//	vector<string> playersNames;
-	//	playersNames.push_back(p1->getName());
-	//	playersNames.push_back(p2->getName());
+	if(Player1_bad_init || Player2_bad_init)
+	{
+		vector<string> playersNames;
+		playersNames.push_back(p1->getName());
+		playersNames.push_back(p2->getName());
 
-	//	// Compute game results (premature termination - technical lose)
-	//	Game::GameRes gameRes;
-	//	gameRes.players_result.resize(2);
+		// Compute game results (premature termination - technical lose)
+		Game::GameRes gameRes;
+		gameRes.players_result.resize(2);
 
-	//	if(Player1_bad_init)
-	//		// Player 1 timeout
-	//		gameRes.players_result[0] = Game::GameRes::TIMEOUT;
-	//	else
-	//		// Player 1 OK, player 2 timeout ==> Player 1 wins
-	//		gameRes.players_result[0] = Game::GameRes::WIN;
+		if(Player1_bad_init)
+			// Player 1 timeout
+			gameRes.players_result[0] = Game::GameRes::TIMEOUT;
+		else
+			// Player 1 OK, player 2 timeout ==> Player 1 wins
+			gameRes.players_result[0] = Game::GameRes::WIN;
 
-	//	if(Player2_bad_init)
-	//		// Player 2 timeout
-	//		gameRes.players_result[1] = Game::GameRes::TIMEOUT;
-	//	else
-	//		// Player 2 OK, player 1 timeout ==> Player 2 wins
-	//		gameRes.players_result[1] = Game::GameRes::WIN;
+		if(Player2_bad_init)
+			// Player 2 timeout
+			gameRes.players_result[1] = Game::GameRes::TIMEOUT;
+		else
+			// Player 2 OK, player 1 timeout ==> Player 2 wins
+			gameRes.players_result[1] = Game::GameRes::WIN;
 
-	//	delete p1;
-	//	delete p2;
+		delete p1;
+		delete p2;
 
-	//	// Output game result to the console
-	//	cout << Game::ResultToString(gameRes, playersNames) << endl;
-	//	// Exit program
-	//	return 0;
-	//}
+		// Output game result to the console
+		cout << Game::ResultToString(gameRes, playersNames) << endl;
+		// Exit program
+		return 0;
+	}
 
 	// Players' construction went fine, start a game
 	vector<Player*> players;
