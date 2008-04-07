@@ -17,8 +17,8 @@ public:
 	OmerMarkAlphaBetaKalahPlayer(Definitions::PlayerColor player, GameTimer::TimeParams& timeParams) 
 		: KalahPlayer(player, timeParams) 
 	{
-			m_myName = "OmerMark"; 
-			m_gameTimer = GameTimer(timeParams);
+		m_myName = "OmerMark"; 
+		m_gameTimer = GameTimer(timeParams);
 	}
 
 	void initGame(int board_size, int stonesInHouse) {
@@ -43,7 +43,7 @@ private:
 	 * The search continues until quiescence.
 	 */
 	OmerMarkAlphaBetaResults* alphaBetaSearch(
-		const KalahBoard& board, int depth, Definitions::PlayerColor player);
+		const KalahBoard& board, int depth, Definitions::PlayerColor player, int _alpha, int _beta);
 
 	/* The critical amount of time: just enough to clean up and return the result. */
 	static const double CRITICAL_TIME;

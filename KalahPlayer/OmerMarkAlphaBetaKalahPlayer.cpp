@@ -18,7 +18,8 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
 	int depth = 1;
 	try {
 		while (true) {
-			OmerMarkAlphaBetaResults *results = alphaBetaSearch(board, depth, m_myColor);
+			OmerMarkAlphaBetaResults *results = alphaBetaSearch(
+				board, depth, m_myColor, numeric_limits<int>::min(), numeric_limits<int>::max());
 			move.m_move = results->move.m_move;
 			delete results;
 			depth++;
@@ -36,7 +37,7 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
 }
 
 OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
-	const KalahBoard &board, int depth, Definitions::PlayerColor player) 
+	const KalahBoard &board, int depth, Definitions::PlayerColor player, int _alpha, int _beta) 
 {
 	if (m_gameTimer.getRemainingMoveTime() < CRITICAL_TIME) {
 		throw new OmerMarkOutOfTimeException();
@@ -46,6 +47,8 @@ OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 		return new OmerMarkAlphaBetaResults(0, utility(board));
 	}
 
+	int alpha = _alpha;
+	int beta = _beta;
 	int bestMove = 0;
 	int bestUtility;
 	if (player == m_myColor) {
@@ -62,17 +65,29 @@ OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 			
 			OmerMarkAlphaBetaResults *results;
 			if (newBoard->isLastStoneSowedInPlayerStore(player)) {
-				results = alphaBetaSearch(*newBoard, depth, player);
+				results = alphaBetaSearch(*newBoard, depth, player, alpha, beta);
 			} else {
-				results = alphaBetaSearch(*newBoard, depth - 1, Definitions::getOppositePlayer(player));
+				results = alphaBetaSearch(*newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta);
 			}
 
-			if (player == m_myColor ? 
-				results->utility > bestUtility : 
-				results->utility < bestUtility) {
-
+			if ((player == m_myColor) && (results->utility > bestUtility)) {
 				bestUtility = results->utility;
 				bestMove = i;
+				if (alpha < bestUtility) {
+					alpha = bestUtility;
+				}
+				if (beta <= bestUtility) {
+					break;
+				}
+			} else if ((player != m_myColor) && (results->utility < bestUtility)) {
+				bestUtility = results->utility;
+				bestMove = i;
+				if (beta > bestUtility) {
+					beta = bestUtility;
+				}
+				if (alpha >= bestUtility) {
+					break;
+				}
 			}
 
 			delete results;
