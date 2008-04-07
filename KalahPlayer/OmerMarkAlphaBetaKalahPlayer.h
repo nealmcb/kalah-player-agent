@@ -8,6 +8,9 @@
 
 #include "KalahPlayer.h"
 #include "OmerMarkAlphaBetaResults.h"
+#include "IHeuristics.h"
+#include "Heuristics_Simple.h"
+#include "Heuristics_Enhanced1.h"
 
 class OmerMarkAlphaBetaKalahPlayer : public KalahPlayer
 {
@@ -19,7 +22,16 @@ public:
 	{
 		m_myName = "OmerMark"; 
 		m_gameTimer = GameTimer(timeParams);
+
+        // Setting out Heuristics function
+        heuristics = new Heuristics_Enhanced1();
 	}
+
+    // Destructor
+    ~OmerMarkAlphaBetaKalahPlayer()
+    {
+        delete heuristics;
+    }
 
 	void initGame(int board_size, int stonesInHouse) {
 		KalahPlayer::initGame(board_size, stonesInHouse);
@@ -34,7 +46,7 @@ protected:
 	/*
 	 * Returns the value of the given board.
 	 */
-	virtual int utility(const KalahBoard& board) = 0;
+	IHeuristics* heuristics;
 
 private:
 
