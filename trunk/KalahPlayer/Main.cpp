@@ -2,6 +2,7 @@
 #include "KalahGame.h"
 #include "RandomKalahPlayer.h"
 #include "OmerMarkSimpleKalahPlayer.h"
+#include "OmerMarkEnhancedKalahPlayer.h"
 #include "GameTimer.h"
 
 #include <iostream>
@@ -60,15 +61,14 @@ int main(int argc, char **argv)
 	// Constructing first player
 	// It is white and will play first
 	init_timer.startMoveTimer();
-	Player *p1 = new OmerMarkSimpleKalahPlayer(Definitions::WHITE, tp);
+	Player *p1 = new OmerMarkEnhancedKalahPlayer(Definitions::WHITE, tp);
 	if(init_timer.isMoveTimePassed())
 		Player1_bad_init = true;
 
 	// Constructing second player
 	// It is black and will play second
 	init_timer.startMoveTimer();
-	Player *p2 = new RandomKalahPlayer(Definitions::BLACK, tp);
-	(dynamic_cast<RandomKalahPlayer*>(p2))->setName("Random");
+	Player *p2 = new OmerMarkSimpleKalahPlayer(Definitions::BLACK, tp);
 	if(init_timer.isMoveTimePassed())
 		Player2_bad_init = true;
 	
