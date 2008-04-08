@@ -62,6 +62,7 @@ private:
 
 	/* The critical amount of time: just enough to clean up and return the result. */
 	static const double CRITICAL_TIME;
+    static const int    MAX_DEPTH_THRESHOLD;
 
 };
 
