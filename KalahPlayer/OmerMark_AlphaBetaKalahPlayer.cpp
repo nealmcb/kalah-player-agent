@@ -1,5 +1,5 @@
-#include "OmerMarkAlphaBetaKalahPlayer.h"
-#include "OmerMarkOutOfTimeException.h"
+#include "OmerMark_AlphaBetaKalahPlayer.h"
+#include "OmerMark_OutOfTimeException.h"
 #include <limits>
 #include <iostream>
 

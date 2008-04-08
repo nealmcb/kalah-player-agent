@@ -1,7 +1,7 @@
 #ifndef _HEURISTICS_SIMPLE_H
 #define _HEURISTICS_SIMPLE_H
 
-#include "IHeuristics.h"
+#include "OmerMark_IHeuristics.h"
 
 class Heuristics_Simple : public IHeuristics
 {

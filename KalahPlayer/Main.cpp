@@ -1,7 +1,7 @@
 #include "Definitions.h"
 #include "KalahGame.h"
 #include "RandomKalahPlayer.h"
-#include "OmerMarkAlphaBetaKalahPlayer.h"
+#include "OmerMark_AlphaBetaKalahPlayer.h"
 #include "GameTimer.h"
 
 #include <iostream>
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 	// It is black and will play second
 	init_timer.startMoveTimer();
 	Player *p2 = new RandomKalahPlayer(Definitions::BLACK, tp);
-	(dynamic_cast<RandomKalahPlayer*>(p2))->setName("Random");
+	(dynamic_cast<RandomKalahPlayer*>(p2))->setName("Random2");
 	if(init_timer.isMoveTimePassed())
 		Player2_bad_init = true;
 	
