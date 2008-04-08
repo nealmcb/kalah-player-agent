@@ -5,7 +5,7 @@ class OmerMarkAlphaBetaResults
 {
 public:
     // Constructors/Destructors
-	OmerMarkAlphaBetaResults(int _move, int _heuristicsVal) : move(_move), heuristicsVal(_heuristicsVal) {}
+	OmerMarkAlphaBetaResults(int _move = 0, int _heuristicsVal = 0) : move(_move), heuristicsVal(_heuristicsVal) {}
     ~OmerMarkAlphaBetaResults() {}
 
 

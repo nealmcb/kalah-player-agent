@@ -5,7 +5,7 @@ RandomKalahPlayer::RandomKalahPlayer(Definitions::PlayerColor playerColor,
 									 const GameTimer::TimeParams &tp)
 : KalahPlayer(playerColor,tp)
 {
-    srand(time(0));
+    srand((unsigned int)time(0));
 };
 
 RandomKalahPlayer::~RandomKalahPlayer()

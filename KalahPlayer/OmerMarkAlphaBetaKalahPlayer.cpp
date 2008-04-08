@@ -7,7 +7,7 @@ using std::cout;
 using std::endl;
 using std::numeric_limits;
 
-#define __OMER_MARK_DEBUG__
+//#define __OMER_MARK_DEBUG__
 
 /*
  * Performs iterative deepening AlphaBeta.
@@ -20,10 +20,10 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
 	int depth = 1;
 	try {
 		while (true) {
-			OmerMarkAlphaBetaResults *results = alphaBetaSearch(
-				board, depth, m_myColor, numeric_limits<int>::min(), numeric_limits<int>::max());
-			move.m_move = results->move.m_move;
-			delete results;
+			OmerMarkAlphaBetaResults results;
+            alphaBetaSearch(board, depth, m_myColor, numeric_limits<int>::min(), 
+                            numeric_limits<int>::max(),results);
+			move.m_move = results.move.m_move;
 			depth++;
 #ifdef __OMER_MARK_DEBUG__
             cout <<"depth: " << depth-1 << ", move: " << move.m_move << endl;
@@ -38,9 +38,15 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
 	}
 }
 
-OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
-	const KalahBoard &board, int depth, Definitions::PlayerColor player, int _alpha, int _beta) 
+void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
+	    const KalahBoard&           board, 
+        int                         depth, 
+        Definitions::PlayerColor    player, 
+        int                         _alpha, 
+        int                         _beta, 
+        OmerMarkAlphaBetaResults&   results) 
 {
+#ifdef __OMER_MARK_DEBUG__
     if (depth > 100)
     {
         cout << "Something Fishy" <<endl;
@@ -53,19 +59,21 @@ OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
         cout << "Alpha = " << _alpha << endl;
         cout << "Beta  = " << _beta << endl;
     }
+#endif
 
 	if (m_gameTimer.getRemainingMoveTime() < CRITICAL_TIME) {
 		throw new OmerMarkOutOfTimeException();
 	}
 
 	if ((board.getBoardResult() != KalahBoard::NOT_FINAL) || (depth <= 0)) {
-        return new OmerMarkAlphaBetaResults(0, heuristics->getHeuristics(board, player));
+        results = OmerMarkAlphaBetaResults(0, heuristics->getHeuristics(board, player));
+        return;
 	}
 
 	int alpha = _alpha;
 	int beta = _beta;
-	int bestMove = 0;
-    int bestHeuristics = (player == m_myColor) ? numeric_limits<int>::min() : numeric_limits<int>::max();
+    results.move = 0;
+    results.heuristicsVal = (player == m_myColor) ? numeric_limits<int>::min() : numeric_limits<int>::max();
 	
 
 	for (int i = m_boardSize; i > 0; i--) 
@@ -76,45 +84,41 @@ OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 			KalahBoard newBoard(board);
 			newBoard.makeMove(player, move);
 			
-			OmerMarkAlphaBetaResults *results;
+			OmerMarkAlphaBetaResults currentResults;
 			if (newBoard.isLastStoneSowedInPlayerStore(player)) 
             {
                 // even though we moving again, the depth search should be the same for both cases
-				results = alphaBetaSearch(newBoard, depth - 1, player, alpha, beta);
+				alphaBetaSearch(newBoard, depth , player, alpha, beta, currentResults);
 			} 
             else 
             {
-				results = alphaBetaSearch(newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta);
+				alphaBetaSearch(newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta, currentResults);
 			}
 
-            if ((player == m_myColor) && (results->heuristicsVal > bestHeuristics)) 
+            if ((player == m_myColor) && (currentResults.heuristicsVal > results.heuristicsVal)) 
             {
-				bestHeuristics = results->heuristicsVal;
-				bestMove = i;
-				if (alpha < bestHeuristics) {
-					alpha = bestHeuristics;
+				results.heuristicsVal = currentResults.heuristicsVal;
+				results.move = i;
+				if (alpha < results.heuristicsVal) {
+					alpha = results.heuristicsVal;
 				}
-				if (beta <= bestHeuristics) {
+				if (beta <= results.heuristicsVal) {
 					break;
 				}
 			}             
-            else if ((player != m_myColor) && (results->heuristicsVal < bestHeuristics)) 
+            else if ((player != m_myColor) && (currentResults.heuristicsVal < results.heuristicsVal)) 
             {
-				bestHeuristics = results->heuristicsVal;
-				bestMove = i;
-				if (beta > bestHeuristics) {
-					beta = bestHeuristics;
+				results.heuristicsVal = currentResults.heuristicsVal;
+				results.move = i;
+				if (beta > results.heuristicsVal) {
+					beta = results.heuristicsVal;
 				}
-				if (alpha >= bestHeuristics) {
+				if (alpha >= results.heuristicsVal) {
 					break;
 				}
 			}
-
-			delete results;
 		}
 	}
-
-	return new OmerMarkAlphaBetaResults(bestMove, bestHeuristics);
 }
 
-const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.0016);
+const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.0001);
