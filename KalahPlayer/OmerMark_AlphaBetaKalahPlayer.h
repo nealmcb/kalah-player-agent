@@ -17,14 +17,16 @@ class OmerMarkAlphaBetaKalahPlayer : public KalahPlayer
 public:
 
 	/* Constructor. */
-	OmerMarkAlphaBetaKalahPlayer(Definitions::PlayerColor player, GameTimer::TimeParams& timeParams) 
+    OmerMarkAlphaBetaKalahPlayer(Definitions::PlayerColor player, GameTimer::TimeParams& timeParams, IHeuristics* _heuristics = 0) 
 		: KalahPlayer(player, timeParams) 
 	{
 		m_myName = "OmerMark"; 
 		m_gameTimer = GameTimer(timeParams);
 
-        // Setting out Heuristics function
-        heuristics = new Heuristics_Enhanced1();
+        if (_heuristics == 0)         
+            heuristics = new Heuristics_Enhanced1();        // Setting default Heuristics function
+        else
+            heuristics = _heuristics;
 	}
 
     // Destructor

@@ -57,18 +57,20 @@ int main(int argc, char **argv)
 	init_tp.timePerMove = default_time_for_constructing;
 	GameTimer init_timer(init_tp);
 
-	// Constructing first player
+
+    // Constructing first player
 	// It is white and will play first
 	init_timer.startMoveTimer();
-    Player *p1 = new OmerMarkAlphaBetaKalahPlayer(Definitions::WHITE, tp);
+    Player *p1 = new OmerMarkAlphaBetaKalahPlayer(Definitions::WHITE, tp, new Heuristics_Enhanced1());
+	(dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Enhanced1");
 	if(init_timer.isMoveTimePassed())
 		Player1_bad_init = true;
 
 	// Constructing second player
 	// It is black and will play second
 	init_timer.startMoveTimer();
-	Player *p2 = new RandomKalahPlayer(Definitions::BLACK, tp);
-	(dynamic_cast<RandomKalahPlayer*>(p2))->setName("Random2");
+    Player *p2 = new OmerMarkAlphaBetaKalahPlayer(Definitions::BLACK, tp, new Heuristics_Simple());
+	(dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Simple");
 	if(init_timer.isMoveTimePassed())
 		Player2_bad_init = true;
 	
