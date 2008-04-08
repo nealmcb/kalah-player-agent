@@ -41,6 +41,9 @@ public:
 	/* See KalahPlayer.h */
 	void makeMove(const Board& curBoard, Move &myMove);
 
+    void setName(const string &s) {m_myName = s;}
+
+
 protected:
 	
 	/*
@@ -54,8 +57,8 @@ private:
 	 * Performs AlphaBeta search until the given depth. 
 	 * The search continues until quiescence.
 	 */
-	OmerMarkAlphaBetaResults* alphaBetaSearch(
-		const KalahBoard& board, int depth, Definitions::PlayerColor player, int _alpha, int _beta);
+	void alphaBetaSearch(
+		const KalahBoard& board, int depth, Definitions::PlayerColor player, int _alpha, int _beta, OmerMarkAlphaBetaResults& results);
 
 	/* The critical amount of time: just enough to clean up and return the result. */
 	static const double CRITICAL_TIME;

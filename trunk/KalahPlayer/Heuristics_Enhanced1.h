@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _HEURISTICS_ENHANCED1_H
+#define _HEURISTICS_ENHANCED1_H
+
 #include "iheuristics.h"
 
 class Heuristics_Enhanced1 :
@@ -22,11 +24,13 @@ private:
     int countPotentialStones(vector<int> houses) 
     {
 	    int sum = 0;
-	    for (int i = 0; i < houses.size(); i++) {
-		    if (houses[i] < houses.size() - i) {
+	    for (int i = 0; i < (int)houses.size(); i++) {
+		    if (houses[i] < (int)houses.size() - i) {
 			    sum += houses[i];
 		    }
 	    }
 	    return sum;
     }
 };
+
+#endif
