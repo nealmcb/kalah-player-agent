@@ -7,10 +7,10 @@
 #define __OMER_MARK_ALPHA_BETA_KALAH_PLAYER_H__
 
 #include "KalahPlayer.h"
-#include "OmerMarkAlphaBetaResults.h"
-#include "IHeuristics.h"
-#include "Heuristics_Simple.h"
-#include "Heuristics_Enhanced1.h"
+#include "OmerMark_AlphaBetaResults.h"
+#include "OmerMark_IHeuristics.h"
+#include "OmerMark_Heuristics_Simple.h"
+#include "OmerMark_Heuristics_Enhanced1.h"
 
 class OmerMarkAlphaBetaKalahPlayer : public KalahPlayer
 {

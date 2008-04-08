@@ -12,7 +12,7 @@
 // and prints whether that move is legal, illegal or a timeout occurred,
 // as well as capturing stones sequence and players turn sequences.
 
-#define __KALAH_SYSTEM_DEBUG__
+//#define __KALAH_SYSTEM_DEBUG__
 
 class Definitions
 {

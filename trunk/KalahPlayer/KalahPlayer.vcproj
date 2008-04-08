@@ -200,7 +200,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OmerMarkAlphaBetaKalahPlayer.cpp"
+				RelativePath=".\OmerMark_AlphaBetaKalahPlayer.cpp"
 				>
 			</File>
 			<File
@@ -226,19 +226,11 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GameTimer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Heuristics_Enhanced1.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Heuristics_Simple.h"
-				>
-			</File>
-			<File
-				RelativePath=".\IHeuristics.h"
 				>
 			</File>
 			<File
@@ -262,15 +254,27 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OmerMarkAlphaBetaKalahPlayer.h"
+				RelativePath=".\OmerMark_AlphaBetaKalahPlayer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OmerMarkAlphaBetaResults.h"
+				RelativePath=".\OmerMark_AlphaBetaResults.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OmerMarkOutOfTimeException.h"
+				RelativePath=".\OmerMark_Heuristics_Enhanced1.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OmerMark_Heuristics_Simple.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OmerMark_IHeuristics.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OmerMark_OutOfTimeException.h"
 				>
 			</File>
 			<File

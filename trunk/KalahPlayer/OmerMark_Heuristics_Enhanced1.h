@@ -1,7 +1,7 @@
 #ifndef _HEURISTICS_ENHANCED1_H
 #define _HEURISTICS_ENHANCED1_H
 
-#include "iheuristics.h"
+#include "OmerMark_IHeuristics.h"
 
 class Heuristics_Enhanced1 :
     public IHeuristics
