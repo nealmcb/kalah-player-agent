@@ -26,17 +26,16 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
                             numeric_limits<int>::max(),results);
 			move.m_move = results.move.m_move;            
 #ifdef __OMER_MARK_DEBUG__
-            cout <<"depth: " << depth-1 << ", move: " << move.m_move << endl;
+            cout <<"depth: " << depth-1 << ", move: " << move.m_move << endl;            
 #endif
 		}
 	} 
-    catch (OmerMarkOutOfTimeException* e) 
+    catch (OmerMarkOutOfTimeException e) 
     {
 #ifdef __OMER_MARK_DEBUG__
 		cout << "Finito." << endl;
 		cout << "Selected move is: " << move.m_move << endl << endl;
 #endif
-		delete e;
 	}
 }
 
@@ -49,7 +48,7 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
         OmerMarkAlphaBetaResults&   results) 
 {
 	if (m_gameTimer.getRemainingMoveTime() < CRITICAL_TIME) {
-		throw new OmerMarkOutOfTimeException();
+		throw OmerMarkOutOfTimeException();
 	}
 
 	if ((board.getBoardResult() != KalahBoard::NOT_FINAL) || (depth <= 0)) {
@@ -75,7 +74,7 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 			if (newBoard.isLastStoneSowedInPlayerStore(player)) 
             {
                 // even though we moving again, the depth search should be the same for both cases
-				alphaBetaSearch(newBoard, depth , player, alpha, beta, currentResults);
+				alphaBetaSearch(newBoard, depth - 1, player, alpha, beta, currentResults);
 			} 
             else 
             {
