@@ -73,17 +73,18 @@ OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 		const KalahMove move(i);
 		if (board.isLegalMove(m_myColor, move)) 
         {
-			KalahBoard *newBoard = new KalahBoard(board);
-			newBoard->makeMove(player, move);
+			KalahBoard newBoard(board);
+			newBoard.makeMove(player, move);
 			
 			OmerMarkAlphaBetaResults *results;
-			if (newBoard->isLastStoneSowedInPlayerStore(player)) 
+			if (newBoard.isLastStoneSowedInPlayerStore(player)) 
             {
-				results = alphaBetaSearch(*newBoard, depth, player, alpha, beta);
+                // even though we moving again, the depth search should be the same for both cases
+				results = alphaBetaSearch(newBoard, depth - 1, player, alpha, beta);
 			} 
             else 
             {
-				results = alphaBetaSearch(*newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta);
+				results = alphaBetaSearch(newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta);
 			}
 
             if ((player == m_myColor) && (results->heuristicsVal > bestHeuristics)) 
@@ -110,7 +111,6 @@ OmerMarkAlphaBetaResults* OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 			}
 
 			delete results;
-			delete newBoard;
 		}
 	}
 
