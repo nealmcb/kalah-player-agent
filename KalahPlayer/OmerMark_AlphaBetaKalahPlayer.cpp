@@ -26,7 +26,7 @@ void OmerMarkAlphaBetaKalahPlayer::makeMove(const Board &curBoard, Move &myMove)
                             numeric_limits<int>::max(),results);
 			move.m_move = results.move.m_move;            
 #ifdef __OMER_MARK_DEBUG__
-            cout <<"depth: " << depth-1 << ", move: " << move.m_move << endl;            
+            cout <<"depth: " << depth << ", move: " << move.m_move << endl;            
 #endif
 		}
 	} 
@@ -107,5 +107,5 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 	}
 }
 
-const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.0001);
+const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.001);
 const int    OmerMarkAlphaBetaKalahPlayer::MAX_DEPTH_THRESHOLD(100);
