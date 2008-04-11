@@ -20,7 +20,7 @@ public:
 	    return heuristics;
     }
 
-private:
+protected:
     int countPotentialStones(vector<int> houses) 
     {
 	    int sum = 0;
