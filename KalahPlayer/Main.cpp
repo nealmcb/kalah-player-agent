@@ -2,6 +2,7 @@
 #include "KalahGame.h"
 #include "RandomKalahPlayer.h"
 #include "OmerMark_AlphaBetaKalahPlayer.h"
+#include "OmerMark_Heuristics_Enhanced2.h"
 #include "GameTimer.h"
 
 #include <iostream>
@@ -40,6 +41,9 @@ int main(int argc, char **argv)
 		return 1;
 	};
 
+    // Randomizing
+    srand((unsigned int)time(0));
+
 	// Game/move parameters
 	GameTimer::TimeParams tp;
 	tp.timePerGame_limit = false;
@@ -58,19 +62,25 @@ int main(int argc, char **argv)
 	GameTimer init_timer(init_tp);
 
 
+    Definitions::PlayerColor color1 = ((rand()%2) == 0)? Definitions::WHITE : Definitions::BLACK;
+    Definitions::PlayerColor color2 = (color1 == Definitions::WHITE)? Definitions::BLACK : Definitions::WHITE;
+    
+    cout << "Player1 plays color = " << color1 << endl;
+    cout << "Player2 plays color = " << color2 << endl;
+
     // Constructing first player
 	// It is white and will play first
 	init_timer.startMoveTimer();
-    Player *p1 = new OmerMarkAlphaBetaKalahPlayer(Definitions::WHITE, tp, new Heuristics_Enhanced1());
-	(dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Enhanced1");
+    Player *p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new Heuristics_Enhanced2(5,0.5));
+	(dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Enhanced 2 5 0.5");
 	if(init_timer.isMoveTimePassed())
 		Player1_bad_init = true;
 
 	// Constructing second player
 	// It is black and will play second
 	init_timer.startMoveTimer();
-    Player *p2 = new OmerMarkAlphaBetaKalahPlayer(Definitions::BLACK, tp, new Heuristics_Simple());
-	(dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Simple");
+    Player *p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp, new Heuristics_Enhanced1());
+	(dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Enhanced 1");
 	if(init_timer.isMoveTimePassed())
 		Player2_bad_init = true;
 	

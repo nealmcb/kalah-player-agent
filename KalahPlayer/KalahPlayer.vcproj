@@ -266,6 +266,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OmerMark_Heuristics_Enhanced2.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OmerMark_Heuristics_Simple.h"
 				>
 			</File>
