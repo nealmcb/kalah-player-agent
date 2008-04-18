@@ -52,7 +52,7 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 	}
 
 	if ((board.getBoardResult() != KalahBoard::NOT_FINAL) || (depth <= 0)) {
-        results = OmerMarkAlphaBetaResults(0, heuristics->getHeuristics(board, player));
+        results = OmerMarkAlphaBetaResults(0, heuristics->getHeuristics(board, m_myColor));
         return;
 	}
 
