@@ -119,6 +119,15 @@ string Game::ResultToString(const GameRes &gameRes,
 		case Game::GameRes::ILLEGAL_MOVE:
 			resStr += string("ILLEGAL_MOVE") + string("\t");
 			break;
+        case Game::GameRes::DRAW:
+            resStr += string("DRAW") + string("\t");
+            break;
+        case Game::GameRes::NONE:
+            resStr += string("NONE") + string("\t");
+            break;
+        default:
+            resStr += string("Unknown Result") + string(" ") + string("\t");
+            break;
 		};
 	};
 	return resStr;

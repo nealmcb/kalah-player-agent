@@ -9,7 +9,7 @@ public:
     virtual ~IHeuristics() {};
 
     // Board evaluation function
-    virtual int getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor) = 0;
+    virtual double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor) = 0;
 };
 
 
