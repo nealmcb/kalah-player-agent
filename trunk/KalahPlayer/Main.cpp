@@ -13,7 +13,7 @@ using namespace std;
 // Game parameters defaults
 const int default_board_size(6);	// Board size - number of houses per player's row
 const int default_stones_in_house(3);	// Initial number of stones per house
-const double default_time_per_move(1);	// Time per player's turn (in seconds)
+const double default_time_per_move(0.1);	// Time per player's turn (in seconds)
 const double default_time_for_constructing(1);	// Time for player's constructor
 const double default_time_for_initialization(10);	// Time for player's initGame
 
@@ -62,78 +62,99 @@ int main(int argc, char **argv)
 	GameTimer init_timer(init_tp);
 
 
-    Definitions::PlayerColor color1 = ((rand()%2) == 0)? Definitions::WHITE : Definitions::BLACK;
-    Definitions::PlayerColor color2 = (color1 == Definitions::WHITE)? Definitions::BLACK : Definitions::WHITE;
+    Definitions::PlayerColor color1 =   Definitions::WHITE;
+    Definitions::PlayerColor color2 =   Definitions::BLACK;
     
-    cout << "Player1 plays color = " << color1 << endl;
-    cout << "Player2 plays color = " << color2 << endl;
+    vector<int> results(2);
 
-    // Constructing first player
-	// It is white and will play first
-	init_timer.startMoveTimer();
-    Player *p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new Heuristics_Enhanced2(5,0.5));
-	(dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Enhanced 2 5 0.5");
-	if(init_timer.isMoveTimePassed())
-		Player1_bad_init = true;
+    for (int i=0; i<100; ++i)
+    {
 
-	// Constructing second player
-	// It is black and will play second
-	init_timer.startMoveTimer();
-    Player *p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp, new Heuristics_Enhanced1());
-	(dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Enhanced 1");
-	if(init_timer.isMoveTimePassed())
-		Player2_bad_init = true;
-	
-	// Check whether any player used too much time during construction
-	if(Player1_bad_init || Player2_bad_init)
-	{
-		vector<string> playersNames;
-		playersNames.push_back(p1->getName());
-		playersNames.push_back(p2->getName());
+        // Constructing first player
+	    // It is white and will play first
+	    init_timer.startMoveTimer();
+        Player *p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new Heuristics_Simple());
+	    (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Simple");
+	    if(init_timer.isMoveTimePassed())
+		    Player1_bad_init = true;
 
-		// Compute game results (premature termination - technical lose)
-		Game::GameRes gameRes;
-		gameRes.players_result.resize(2);
+	    // Constructing second player
+	    // It is black and will play second
+	    init_timer.startMoveTimer();
+        Player *p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp);
+	    (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Enhanced++");
+	    if(init_timer.isMoveTimePassed())
+		    Player2_bad_init = true;
+    	
+	    // Check whether any player used too much time during construction
+	    if(Player1_bad_init || Player2_bad_init)
+	    {
+		    vector<string> playersNames;
+		    playersNames.push_back(p1->getName());
+		    playersNames.push_back(p2->getName());
 
-		if(Player1_bad_init)
-			// Player 1 timeout
-			gameRes.players_result[0] = Game::GameRes::TIMEOUT;
-		else
-			// Player 1 OK, player 2 timeout ==> Player 1 wins
-			gameRes.players_result[0] = Game::GameRes::WIN;
+		    // Compute game results (premature termination - technical lose)
+		    Game::GameRes gameRes;
+		    gameRes.players_result.resize(2);
 
-		if(Player2_bad_init)
-			// Player 2 timeout
-			gameRes.players_result[1] = Game::GameRes::TIMEOUT;
-		else
-			// Player 2 OK, player 1 timeout ==> Player 2 wins
-			gameRes.players_result[1] = Game::GameRes::WIN;
+		    if(Player1_bad_init)
+			    // Player 1 timeout
+			    gameRes.players_result[0] = Game::GameRes::TIMEOUT;
+		    else
+			    // Player 1 OK, player 2 timeout ==> Player 1 wins
+			    gameRes.players_result[0] = Game::GameRes::WIN;
 
-		delete p1;
-		delete p2;
+		    if(Player2_bad_init)
+			    // Player 2 timeout
+			    gameRes.players_result[1] = Game::GameRes::TIMEOUT;
+		    else
+			    // Player 2 OK, player 1 timeout ==> Player 2 wins
+			    gameRes.players_result[1] = Game::GameRes::WIN;
 
-		// Output game result to the console
-		cout << Game::ResultToString(gameRes, playersNames) << endl;
-		// Exit program
-		return 0;
-	}
+		    delete p1;
+		    delete p2;
 
-	// Players' construction went fine, start a game
-	vector<Player*> players;
-	players.push_back(p1);
-	players.push_back(p2);
+		    // Output game result to the console
+		    cout << Game::ResultToString(gameRes, playersNames) << endl;
+		    // Exit program
+		    return 0;
+	    }
 
-	// Initialize game
-	KalahGame kg(players, default_time_for_initialization,
-		tp, board_size, stones_in_house);
+	    // Players' construction went fine, start a game
+	    vector<Player*> players;
+	    players.push_back(p1);
+	    players.push_back(p2);
 
-	// Play game
-	kg.playGame();
 
-	// Output game result to the console
-	cout << kg.ResultToString() << endl;
+    
+	    // Initialize game
+	    KalahGame kg(players, default_time_for_initialization,
+		    tp, board_size, stones_in_house);
 
-	return 0;
+	    // Play game
+	    kg.playGame();
+        
+        cout << kg.ResultToString() << endl;
+
+        for (int j=0; j<2; ++j)
+        {
+            // Output game result to the console
+            if (kg.getPlayerResult(j) == Game::GameRes::ILLEGAL_MOVE)
+                results[j] -= 5;
+            if (kg.getPlayerResult(j) == Game::GameRes::NORMAL_WIN)
+                results[j] += 1;
+            if (kg.getPlayerResult(j) == Game::GameRes::WIN)
+                results[j] += 1;
+            if (kg.getPlayerResult(j) == Game::GameRes::DRAW)
+                results[j] += 1;
+            if (kg.getPlayerResult(j) == Game::GameRes::TIMEOUT)
+                results[j] -= 3;
+        }
+       
+    }
+    cout << "Player 1 = " << results[0] << "\tPlayer 2 = " << results[1] << endl;
+
+    return 0;
 };
 
 bool ProcessCommandLine(int argc, char **argv)

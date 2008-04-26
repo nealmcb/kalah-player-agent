@@ -1,6 +1,5 @@
 /*
- * An abstract class that implements an iterative deepening version of the AlphaBeta algorithm.
- * Any inheriting class should implement the utility method.
+ * An class that implements an iterative deepening version of the AlphaBeta algorithm.
  */
 
 #ifndef __OMER_MARK_ALPHA_BETA_KALAH_PLAYER_H__
@@ -11,6 +10,7 @@
 #include "OmerMark_IHeuristics.h"
 #include "OmerMark_Heuristics_Simple.h"
 #include "OmerMark_Heuristics_Enhanced1.h"
+#include "OmerMark_Heuristics_Enhanced2.h"
 
 class OmerMarkAlphaBetaKalahPlayer : public KalahPlayer
 {
@@ -23,8 +23,13 @@ public:
 		m_myName = "OmerMark"; 
 		m_gameTimer = GameTimer(timeParams);
 
-        if (_heuristics == 0)         
-            heuristics = new Heuristics_Enhanced1();        // Setting default Heuristics function
+        if (_heuristics == 0)         // using default values
+        {
+            if (timeParams.timePerMove < MaxTimeForSimpleHeuristics)
+                heuristics = new Heuristics_Simple();
+            else
+                heuristics = new Heuristics_Enhanced2(5,2);
+        }
         else
             heuristics = _heuristics;
 	}
@@ -60,12 +65,20 @@ private:
 	 * The search continues until quiescence.
 	 */
 	void alphaBetaSearch(
-		const KalahBoard& board, int depth, Definitions::PlayerColor player, int _alpha, int _beta, OmerMarkAlphaBetaResults& results);
+		const KalahBoard& board, int depth, Definitions::PlayerColor player, double _alpha, double _beta, OmerMarkAlphaBetaResults& results);
 
 	/* The critical amount of time: just enough to clean up and return the result. */
 	static const double CRITICAL_TIME;
+    
+    /* Maximum depth search. */
     static const int    MAX_DEPTH_THRESHOLD;
 
+    /* Bonus Depth for interesting nodes - for Quiescence */
+    static const int    QuiescenceBonus;
+
+    /* Maximum time bellow which the Simple Heuristics is better then others */
+    static const double MaxTimeForSimpleHeuristics;
 };
 
 #endif
+

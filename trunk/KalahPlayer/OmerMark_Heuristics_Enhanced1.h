@@ -13,12 +13,12 @@ public:
 	Heuristics_Enhanced1(double _weight = 1) : weight(_weight) {};
     virtual ~Heuristics_Enhanced1() {}
 
-    int getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
+    double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
     {
 	    double score = board.getStoreContents(playerColor) 
 					 - board.getStoreContents(Definitions::getOppositePlayer(playerColor));
 
-		vector<int> &myHouses = board.getHousesContents(playerColor);
+		vector<int> myHouses = board.getHousesContents(playerColor);
 
 		double count = 0;
 		int i = 1;
@@ -30,7 +30,7 @@ public:
 			i++;
 	    }
 
-		vector<int> &opponentHouses = board.getHousesContents(Definitions::getOppositePlayer(playerColor));
+		vector<int> opponentHouses = board.getHousesContents(Definitions::getOppositePlayer(playerColor));
 
 		i = 1;
 		for (vector<int>::iterator iterator = opponentHouses.begin(); iterator != opponentHouses.end(); iterator++) {

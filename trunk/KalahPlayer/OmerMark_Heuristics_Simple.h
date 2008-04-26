@@ -10,7 +10,7 @@ public:
     ~Heuristics_Simple()    {}
 
     // Implementation of simple heuristics function
-    int getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
+    double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
     {
         return board.getStoreContents(playerColor) - 
                board.getStoreContents(Definitions::getOppositePlayer(playerColor));      

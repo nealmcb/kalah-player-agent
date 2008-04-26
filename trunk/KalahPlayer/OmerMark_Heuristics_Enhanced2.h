@@ -12,45 +12,38 @@ public:
                      StoreStonesWeight(_StoreStonesWeight),DistanceWeight(_DistanceWeight){}
     virtual ~Heuristics_Enhanced2() {};
     
-    int getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
+    double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
     {
-	    int Store = 0;
-        int Distances = 0;
+	    double Store = 0;
+        double Distances = 0;
 
         Store += board.getStoreContents(playerColor);
 	    Store -= board.getStoreContents(Definitions::getOppositePlayer(playerColor));
 
-        Distances += countDistances(board.getHousesContents(playerColor), playerColor);
+        Distances += countDistances(board.getHousesContents(playerColor));
 
 // Not sure we should care about distances of opponent. Maybe we insert it normalized to some small value
 // so it won't take much "weight" in the desicion.       
-//	    Distances -= countDistances(board.getHousesContents(Definitions::getOppositePlayer(playerColor)));
+	    Distances -= countDistances(board.getHousesContents(Definitions::getOppositePlayer(playerColor)));
 
-        return (int)(Store*StoreStonesWeight + Distances*DistanceWeight);
+        return Store*StoreStonesWeight + Distances*DistanceWeight;
     }
 protected:
     double StoreStonesWeight;
     double DistanceWeight;
 
-    int countDistances(const vector<int>& houses, const Definitions::PlayerColor& color)
+    double countDistances(const vector<int>& houses)
     {
         int distances = 0;
         
-        if (color == Definitions::WHITE)
         {
             for (unsigned int i = 0; i < houses.size(); ++i)
             {
                 distances += houses[i]*(i + 1);
             }
         }
-        else
-        {
-            for (unsigned int i = 0; i < houses.size(); ++i)
-            {
-                distances += houses[i]*(houses.size()- i);
-            }
-        }
-        return distances;
+
+        return (double)distances;
     }
 
 };
