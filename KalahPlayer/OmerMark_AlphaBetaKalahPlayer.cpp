@@ -89,10 +89,12 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
         }
 
 		KalahBoard newBoard(board);
+        bool capture = willWeCapture(newBoard, move);
 		newBoard.makeMove(player, move);
 		
 		OmerMarkAlphaBetaResults currentResults;
-		if (newBoard.isLastStoneSowedInPlayerStore(player)) 
+		if ((newBoard.isLastStoneSowedInPlayerStore(player)) ||
+            ((player == m_myColor) && capture))
         {
             // This is interesting board position - we would like to explore more deeply into this
             // direction.
@@ -127,6 +129,27 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 		}
 	}
 }
+
+bool OmerMarkAlphaBetaKalahPlayer::willWeCapture(const KalahBoard& board, const KalahMove& move)
+{
+    vector<int> myHouse = board.getHousesContents(m_myColor);
+    vector<int> opHouse = board.getHousesContents(Definitions::getOppositePlayer(m_myColor));
+
+    if (myHouse[move.m_move -1] == 0)
+        return false;
+
+    // if we finish not in our house return
+    if (myHouse[move.m_move - 1] > ((int)myHouse.size() - move.m_move))
+        return false;
+    // if we land in empty house and ops not empty - HOORAY!
+    if ((myHouse[move.m_move - 1 + myHouse[move.m_move - 1]] == 0) &&
+        (opHouse[move.m_move - 1 + myHouse[move.m_move - 1]] != 0))
+        return true;
+    
+    return false;
+        
+}
+
 
 const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.001);
 const int    OmerMarkAlphaBetaKalahPlayer::MAX_DEPTH_THRESHOLD(100);
