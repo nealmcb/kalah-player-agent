@@ -93,17 +93,21 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 		newBoard.makeMove(player, move);
 		
 		OmerMarkAlphaBetaResults currentResults;
-		if ((newBoard.isLastStoneSowedInPlayerStore(player)) ||
-            ((player == m_myColor) && capture))
+
+        // this is last move and our move. we should check if this is interesting positions we
+        // want to explore
+        if ((depth == 1) && (player == m_myColor))
         {
-            // This is interesting board position - we would like to explore more deeply into this
-            // direction.
-			alphaBetaSearch(newBoard, depth - 1 + QuiescenceBonus, player, alpha, beta, currentResults);
-		} 
-        else 
+            if (capture)    // if capture occured we want to explore 2 more moves
+                alphaBetaSearch(newBoard, depth + 1, Definitions::getOppositePlayer(player), alpha, beta, currentResults);
+        }
+        else
         {
-			alphaBetaSearch(newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta, currentResults);
-		}
+            if (newBoard.isLastStoneSowedInPlayerStore(player))
+			    alphaBetaSearch(newBoard, depth - 1, player, alpha, beta, currentResults);
+            else 
+			    alphaBetaSearch(newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta, currentResults);
+        }
 
         if ((player == m_myColor) && (currentResults.heuristicsVal > results.heuristicsVal)) 
         {
@@ -153,5 +157,4 @@ bool OmerMarkAlphaBetaKalahPlayer::willWeCapture(const KalahBoard& board, const 
 
 const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.001);
 const int    OmerMarkAlphaBetaKalahPlayer::MAX_DEPTH_THRESHOLD(100);
-const int    OmerMarkAlphaBetaKalahPlayer::QuiescenceBonus(1);
 const double OmerMarkAlphaBetaKalahPlayer::MaxTimeForSimpleHeuristics(0.1);

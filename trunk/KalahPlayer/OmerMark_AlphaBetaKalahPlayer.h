@@ -28,7 +28,7 @@ public:
             if (timeParams.timePerMove < MaxTimeForSimpleHeuristics)
                 heuristics = new Heuristics_Simple();
             else
-                heuristics = new Heuristics_Enhanced2(5,2);
+                heuristics = new Heuristics_Enhanced2(10,0.5);
         }
         else
             heuristics = _heuristics;
@@ -75,9 +75,6 @@ private:
     
     /* Maximum depth search. */
     static const int    MAX_DEPTH_THRESHOLD;
-
-    /* Bonus Depth for interesting nodes - for Quiescence */
-    static const int    QuiescenceBonus;
 
     /* Maximum time bellow which the Simple Heuristics is better then others */
     static const double MaxTimeForSimpleHeuristics;
