@@ -11,11 +11,11 @@
 using namespace std;
 
 // Game parameters defaults
-const int default_board_size(6);	// Board size - number of houses per player's row
-const int default_stones_in_house(3);	// Initial number of stones per house
-const double default_time_per_move(0.1);	// Time per player's turn (in seconds)
-const double default_time_for_constructing(1);	// Time for player's constructor
-const double default_time_for_initialization(10);	// Time for player's initGame
+const int default_board_size(3);	                    // Board size - number of houses per player's row
+const int default_stones_in_house(3);	                // Initial number of stones per house
+const double default_time_per_move(0.1);	            // Time per player's turn (in seconds)
+const double default_time_for_constructing(1);	        // Time for player's constructor
+const double default_time_for_initialization(10);	    // Time for player's initGame
 
 // Globals for replacing default values with command line parameters
 int board_size(default_board_size);
@@ -67,25 +67,51 @@ int main(int argc, char **argv)
     
     vector<int> results(2);
 
-    for (int i=0; i<100; ++i)
+    cout << "[Board = \t" << board_size << ", Stones = \t" << \
+            stones_in_house << ", Time = \t" << time_per_move << "\t]" << endl;
+    bool toggle_move = false;
+
+    for (int i=0; i<20; ++i)
     {
+        toggle_move = !toggle_move;
 
         // Constructing first player
 	    // It is white and will play first
-	    init_timer.startMoveTimer();
-        Player *p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new Heuristics_Simple());
-	    (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Simple");
-	    if(init_timer.isMoveTimePassed())
-		    Player1_bad_init = true;
+        Player *p1;
+        Player *p2;
 
-	    // Constructing second player
-	    // It is black and will play second
-	    init_timer.startMoveTimer();
-        Player *p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp);
-	    (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Enhanced++");
-	    if(init_timer.isMoveTimePassed())
-		    Player2_bad_init = true;
-    	
+        if (toggle_move)
+        {
+	        init_timer.startMoveTimer();
+            p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new Heuristics_Simple());
+	        (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Simple");
+	        if(init_timer.isMoveTimePassed())
+		        Player1_bad_init = true;
+
+	        // Constructing second player
+	        // It is black and will play second
+	        init_timer.startMoveTimer();
+            p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp, new Heuristics_Enhanced2(10,0.5));
+	        (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Enhanced++");
+	        if(init_timer.isMoveTimePassed())
+		        Player2_bad_init = true;
+        }
+        else
+        {
+	        init_timer.startMoveTimer();
+            p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new Heuristics_Enhanced2(10,0.5));
+	        (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Enhanced++");
+	        if(init_timer.isMoveTimePassed())
+		        Player1_bad_init = true;
+
+	        // Constructing second player
+	        // It is black and will play second
+	        init_timer.startMoveTimer();
+            p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp, new Heuristics_Simple());
+	        (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Simple    ");
+	        if(init_timer.isMoveTimePassed())
+		        Player2_bad_init = true;
+        }
 	    // Check whether any player used too much time during construction
 	    if(Player1_bad_init || Player2_bad_init)
 	    {
@@ -138,21 +164,26 @@ int main(int argc, char **argv)
 
         for (int j=0; j<2; ++j)
         {
+            int k = j;
+            if (!toggle_move)
+                k = 1-k;
+
             // Output game result to the console
             if (kg.getPlayerResult(j) == Game::GameRes::ILLEGAL_MOVE)
-                results[j] -= 5;
+                results[k] -= 5;
             if (kg.getPlayerResult(j) == Game::GameRes::NORMAL_WIN)
-                results[j] += 1;
+                results[k] += 1;
             if (kg.getPlayerResult(j) == Game::GameRes::WIN)
-                results[j] += 1;
+                results[k] += 1;
             if (kg.getPlayerResult(j) == Game::GameRes::DRAW)
-                results[j] += 1;
+                results[k] += 1;
             if (kg.getPlayerResult(j) == Game::GameRes::TIMEOUT)
-                results[j] -= 3;
+                results[k] -= 3;
         }
+
        
     }
-    cout << "Player 1 = " << results[0] << "\tPlayer 2 = " << results[1] << endl;
+    cout << "[Simple  \t" << results[0] << "\tEnhanced\t" << results[1] << "]" << endl << endl;
 
     return 0;
 };
