@@ -25,10 +25,7 @@ public:
 
         if (_heuristics == 0)         // using default values
         {
-            if (timeParams.timePerMove < MaxTimeForSimpleHeuristics)
-                heuristics = new Heuristics_Simple();
-            else
-                heuristics = new Heuristics_Enhanced2(10,0.5);
+            heuristics = new Heuristics_Enhanced2(20, 1);
         }
         else
             heuristics = _heuristics;
@@ -76,8 +73,6 @@ private:
     /* Maximum depth search. */
     static const int    MAX_DEPTH_THRESHOLD;
 
-    /* Maximum time bellow which the Simple Heuristics is better then others */
-    static const double MaxTimeForSimpleHeuristics;
 };
 
 #endif

@@ -157,4 +157,3 @@ bool OmerMarkAlphaBetaKalahPlayer::willWeCapture(const KalahBoard& board, const 
 
 const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.001);
 const int    OmerMarkAlphaBetaKalahPlayer::MAX_DEPTH_THRESHOLD(100);
-const double OmerMarkAlphaBetaKalahPlayer::MaxTimeForSimpleHeuristics(0.1);
