@@ -1,6 +1,18 @@
-/*
- * An class that implements an iterative deepening version of the AlphaBeta algorithm.
- */
+/*-------------------------------------------------------------------------------------*/
+/*                                                                                     */
+/* Project Name:                                                                       */
+/*     AI - HW 2                                                                       */
+/*                                                                                     */
+/* OmerMark_AlphaBetaPlayer.h                                                          */
+/*     This file contains interface of our agent that implements                       */
+/*     an iterative deepening version of the AlphaBeta algorithm                       */
+/*-------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------*/
+/*                                                                                     */
+/* Author(s):                                                                          */
+/*      Omer Levy                                                                      */
+/*      Mark Lukoyanichev                                                              */
+/*-------------------------------------------------------------------------------------*/
 
 #ifndef __OMER_MARK_ALPHA_BETA_KALAH_PLAYER_H__
 #define __OMER_MARK_ALPHA_BETA_KALAH_PLAYER_H__

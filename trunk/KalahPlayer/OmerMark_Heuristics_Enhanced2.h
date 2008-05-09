@@ -1,3 +1,19 @@
+/*-------------------------------------------------------------------------------------*/
+/*                                                                                     */
+/* Project Name:                                                                       */
+/*     AI - HW 2                                                                       */
+/*                                                                                     */
+/* OmerMark_Heuristics_Enhanced2.h                                                     */
+/*     This file contains implementation of enhanced heuristic function 2nd generation */
+/*                                                                                     */
+/*-------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------*/
+/*                                                                                     */
+/* Author(s):                                                                          */
+/*      Omer Levy                                                                      */
+/*      Mark Lukoyanichev                                                              */
+/*-------------------------------------------------------------------------------------*/
+
 #ifndef _HEURISTICS_ENHANCED2_H
 #define _HEURISTICS_ENHANCED2_H
 
@@ -12,6 +28,7 @@ public:
                      StoreStonesWeight(_StoreStonesWeight),DistanceWeight(_DistanceWeight){}
     virtual ~Heuristics_Enhanced2() {};
     
+    // The Heuristic function
     double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
     {
 	    double Store = 0;
@@ -20,10 +37,7 @@ public:
         Store += board.getStoreContents(playerColor);
 	    Store -= board.getStoreContents(Definitions::getOppositePlayer(playerColor));
 
-        Distances += countDistances(board.getHousesContents(playerColor));
-
-// Not sure we should care about distances of opponent. Maybe we insert it normalized to some small value
-// so it won't take much "weight" in the desicion.       
+        Distances += countDistances(board.getHousesContents(playerColor));      
 	    Distances -= countDistances(board.getHousesContents(Definitions::getOppositePlayer(playerColor)));
 
         return Store*StoreStonesWeight + Distances*DistanceWeight;
@@ -36,12 +50,8 @@ protected:
     {
         int distances = 0;
         
-        {
-            for (unsigned int i = 0; i < houses.size(); ++i)
-            {
-                distances += houses[i]*(i + 1);
-            }
-        }
+        for (unsigned int i = 0; i < houses.size(); ++i)
+            distances += houses[i]*(i + 1);
 
         return (double)distances;
     }
