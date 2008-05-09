@@ -1,3 +1,19 @@
+/*-------------------------------------------------------------------------------------*/
+/*                                                                                     */
+/* Project Name:                                                                       */
+/*     AI - HW 2                                                                       */
+/*                                                                                     */
+/* OmerMark_AlphaBetaPlayer.cpp                                                        */
+/*     This file contains implementation of our agent that implements                  */
+/*     an iterative deepening version of the AlphaBeta algorithm                       */
+/*-------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------*/
+/*                                                                                     */
+/* Author(s):                                                                          */
+/*      Omer Levy                                                                      */
+/*      Mark Lukoyanichev                                                              */
+/*-------------------------------------------------------------------------------------*/
+
 #include "OmerMark_AlphaBetaKalahPlayer.h"
 #include "OmerMark_OutOfTimeException.h"
 #include <limits>
@@ -91,13 +107,14 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 		KalahBoard newBoard(board);
         int StonesBeforeTheMove = newBoard.getStoreContents(m_myColor);
 		newBoard.makeMove(player, move);
+        // We check if by given move we increased the number of our stones
         int StonesDiff = newBoard.getStoreContents(m_myColor) - StonesBeforeTheMove;
 		
 		OmerMarkAlphaBetaResults currentResults;
               
         if ((player == m_myColor) && (StonesDiff > 0) )
         {
-            // if stones added to the store (either by capturing or either by simple move)
+            // if stones added to the store (either by capturing or by simple move)
             // this is an interesting branch and we want to explore more into it
             alphaBetaSearch(newBoard, depth, Definitions::getOppositePlayer(player), alpha, beta, currentResults);
         }
@@ -109,6 +126,7 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 			    alphaBetaSearch(newBoard, depth - 1, Definitions::getOppositePlayer(player), alpha, beta, currentResults);
         }
 
+        // making the alpha-beta pruning 
         if ((player == m_myColor) && (currentResults.heuristicsVal > results.heuristicsVal)) 
         {
 			results.heuristicsVal = currentResults.heuristicsVal;
@@ -138,3 +156,5 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 
 const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.001);
 const int    OmerMarkAlphaBetaKalahPlayer::MAX_DEPTH_THRESHOLD(100);
+
+
