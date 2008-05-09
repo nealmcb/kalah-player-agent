@@ -89,17 +89,17 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
         }
 
 		KalahBoard newBoard(board);
-        bool capture = willWeCapture(newBoard, move);
+        int StonesBeforeTheMove = newBoard.getStoreContents(m_myColor);
 		newBoard.makeMove(player, move);
+        int StonesDiff = newBoard.getStoreContents(m_myColor) - StonesBeforeTheMove;
 		
 		OmerMarkAlphaBetaResults currentResults;
-
-        // this is last move and our move. we should check if this is interesting positions we
-        // want to explore
-        if ((depth == 1) && (player == m_myColor))
+              
+        if ((player == m_myColor) && (StonesDiff > 0) )
         {
-            if (capture)    // if capture occured we want to explore 2 more moves
-                alphaBetaSearch(newBoard, depth + 1, Definitions::getOppositePlayer(player), alpha, beta, currentResults);
+            // if stones added to the store (either by capturing or either by simple move)
+            // this is an interesting branch and we want to explore more into it
+            alphaBetaSearch(newBoard, depth, Definitions::getOppositePlayer(player), alpha, beta, currentResults);
         }
         else
         {
@@ -134,25 +134,6 @@ void OmerMarkAlphaBetaKalahPlayer::alphaBetaSearch(
 	}
 }
 
-bool OmerMarkAlphaBetaKalahPlayer::willWeCapture(const KalahBoard& board, const KalahMove& move)
-{
-    vector<int> myHouse = board.getHousesContents(m_myColor);
-    vector<int> opHouse = board.getHousesContents(Definitions::getOppositePlayer(m_myColor));
-
-    if (myHouse[move.m_move -1] == 0)
-        return false;
-
-    // if we finish not in our house return
-    if (myHouse[move.m_move - 1] > ((int)myHouse.size() - move.m_move))
-        return false;
-    // if we land in empty house and ops not empty - HOORAY!
-    if ((myHouse[move.m_move - 1 + myHouse[move.m_move - 1]] == 0) &&
-        (opHouse[move.m_move - 1 + myHouse[move.m_move - 1]] != 0))
-        return true;
-    
-    return false;
-        
-}
 
 
 const double OmerMarkAlphaBetaKalahPlayer::CRITICAL_TIME(0.001);
