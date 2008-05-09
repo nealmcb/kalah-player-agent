@@ -64,9 +64,6 @@ private:
 	void alphaBetaSearch(
 		const KalahBoard& board, int depth, Definitions::PlayerColor player, double _alpha, double _beta, OmerMarkAlphaBetaResults& results);
 
-    /* The function will return if on the given board by the given move we will capture stones or not */
-    bool willWeCapture(const KalahBoard& board, const KalahMove& move);
-
 	/* The critical amount of time: just enough to clean up and return the result. */
 	static const double CRITICAL_TIME;
     
