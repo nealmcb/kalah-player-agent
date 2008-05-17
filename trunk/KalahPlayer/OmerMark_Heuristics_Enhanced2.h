@@ -14,19 +14,19 @@
 /*      Mark Lukoyanichev                                                              */
 /*-------------------------------------------------------------------------------------*/
 
-#ifndef _HEURISTICS_ENHANCED2_H
-#define _HEURISTICS_ENHANCED2_H
+#ifndef _OMERMARK_HEURISTICS_ENHANCED2_H
+#define _OMERMARK_HEURISTICS_ENHANCED2_H
 
 #include <math.h>
 #include "OmerMark_IHeuristics.h"
 
-class Heuristics_Enhanced2 :
-    public IHeuristics
+class OmerMark_Heuristics_Enhanced2 :
+    public OmerMark_IHeuristics
 {
 public:
-    Heuristics_Enhanced2(double _StoreStonesWeight = 1, double _DistanceWeight = 0):
+    OmerMark_Heuristics_Enhanced2(double _StoreStonesWeight = 1, double _DistanceWeight = 0):
                      StoreStonesWeight(_StoreStonesWeight),DistanceWeight(_DistanceWeight){}
-    virtual ~Heuristics_Enhanced2() {};
+    virtual ~OmerMark_Heuristics_Enhanced2() {};
     
     // The Heuristic function
     double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
