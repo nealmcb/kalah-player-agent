@@ -14,20 +14,20 @@
 /*      Mark Lukoyanichev                                                              */
 /*-------------------------------------------------------------------------------------*/
 
-#ifndef _HEURISTICS_ENHANCED1_H
-#define _HEURISTICS_ENHANCED1_H
+#ifndef _OMERMARK_HEURISTICS_ENHANCED1_H
+#define _OMERMARK_HEURISTICS_ENHANCED1_H
 
 #include <iostream>
 #include "OmerMark_IHeuristics.h"
 
 using std::cout;
 
-class Heuristics_Enhanced1 :
-    public IHeuristics
+class OmerMark_Heuristics_Enhanced1 :
+    public OmerMark_IHeuristics
 {
 public:
-	Heuristics_Enhanced1(double _weight = 1) : weight(_weight) {};
-    virtual ~Heuristics_Enhanced1() {}
+	OmerMark_Heuristics_Enhanced1(double _weight = 1) : weight(_weight) {};
+    virtual ~OmerMark_Heuristics_Enhanced1() {}
 
     double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)
     {

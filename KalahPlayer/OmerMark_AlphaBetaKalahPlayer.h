@@ -29,7 +29,7 @@ class OmerMarkAlphaBetaKalahPlayer : public KalahPlayer
 public:
 
 	/* Constructor. */
-    OmerMarkAlphaBetaKalahPlayer(Definitions::PlayerColor player, GameTimer::TimeParams& timeParams, IHeuristics* _heuristics = 0) 
+    OmerMarkAlphaBetaKalahPlayer(Definitions::PlayerColor player, GameTimer::TimeParams& timeParams, OmerMark_IHeuristics* _heuristics = 0) 
 		: KalahPlayer(player, timeParams) 
 	{
 		m_myName = "OmerMark"; 
@@ -37,7 +37,7 @@ public:
 
         if (_heuristics == 0)         // using default values
         {
-            heuristics = new Heuristics_Enhanced2(20, 1);
+            heuristics = new OmerMark_Heuristics_Enhanced2(20, 1);
         }
         else
             heuristics = _heuristics;
@@ -65,7 +65,7 @@ protected:
 	/*
 	 * Returns the value of the given board.
 	 */
-	IHeuristics* heuristics;
+	OmerMark_IHeuristics* heuristics;
 
 private:
 

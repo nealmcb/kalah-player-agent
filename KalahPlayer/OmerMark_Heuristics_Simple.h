@@ -14,16 +14,16 @@
 /*      Mark Lukoyanichev                                                              */
 /*-------------------------------------------------------------------------------------*/
 
-#ifndef _HEURISTICS_SIMPLE_H
-#define _HEURISTICS_SIMPLE_H
+#ifndef _OMERMARK_HEURISTICS_SIMPLE_H
+#define _OMERMARK_HEURISTICS_SIMPLE_H
 
 #include "OmerMark_IHeuristics.h"
 
-class Heuristics_Simple : public IHeuristics
+class OmerMark_Heuristics_Simple : public OmerMark_IHeuristics
 {
 public:
-    Heuristics_Simple()             {}
-    ~Heuristics_Simple()    {}
+    OmerMark_Heuristics_Simple()             {}
+    ~OmerMark_Heuristics_Simple()    {}
 
     // Implementation of simple heuristics function
     double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor)

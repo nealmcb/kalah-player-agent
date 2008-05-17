@@ -14,15 +14,15 @@
 /*      Mark Lukoyanichev                                                              */
 /*-------------------------------------------------------------------------------------*/
 
-#ifndef _IHEURISTICS_H
-#define _IHEURISTICS_H
+#ifndef _OMERMARK_IHEURISTICS_H
+#define _OMERMARK_IHEURISTICS_H
 
-class IHeuristics
+class OmerMark_IHeuristics
 {
 public:
     // Constructors/Destructors
-    IHeuristics() {};
-    virtual ~IHeuristics() {};
+    OmerMark_IHeuristics() {};
+    virtual ~OmerMark_IHeuristics() {};
 
     // Board evaluation function
     virtual double getHeuristics(const KalahBoard& board, const Definitions::PlayerColor& playerColor) = 0;

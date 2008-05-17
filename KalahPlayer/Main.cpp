@@ -83,7 +83,7 @@ int main(int argc, char **argv)
         if (toggle_move)
         {
 	        init_timer.startMoveTimer();
-            p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new Heuristics_Simple());
+            p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new OmerMark_Heuristics_Simple());
 	        (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Simple");
 	        if(init_timer.isMoveTimePassed())
 		        Player1_bad_init = true;
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 	        // Constructing second player
 	        // It is black and will play second
 	        init_timer.startMoveTimer();
-            p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp, new Heuristics_Enhanced2(10,0.5));
+            p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp, new OmerMark_Heuristics_Enhanced2(10,0.5));
 	        (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Enhanced++");
 	        if(init_timer.isMoveTimePassed())
 		        Player2_bad_init = true;
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
         else
         {
 	        init_timer.startMoveTimer();
-            p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new Heuristics_Enhanced2(10,0.5));
+            p1 = new OmerMarkAlphaBetaKalahPlayer(color1, tp, new OmerMark_Heuristics_Enhanced2(10,0.5));
 	        (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p1))->setName("Enhanced++");
 	        if(init_timer.isMoveTimePassed())
 		        Player1_bad_init = true;
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 	        // Constructing second player
 	        // It is black and will play second
 	        init_timer.startMoveTimer();
-            p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp, new Heuristics_Simple());
+            p2 = new OmerMarkAlphaBetaKalahPlayer(color2, tp, new OmerMark_Heuristics_Simple());
 	        (dynamic_cast<OmerMarkAlphaBetaKalahPlayer*>(p2))->setName("Simple    ");
 	        if(init_timer.isMoveTimePassed())
 		        Player2_bad_init = true;
