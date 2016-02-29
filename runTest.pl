@@ -10,7 +10,7 @@ for $time(@times)
     {
         for $stone(@stones)
         {
-                system("KalahPlayer.exe -time $time -size $board -stones $stone");
+                system("./KalahGame -time $time -size $board -stones $stone");
         }
     }
 }

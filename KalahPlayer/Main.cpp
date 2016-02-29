@@ -4,6 +4,7 @@
 #include "OmerMark_AlphaBetaKalahPlayer.h"
 #include "OmerMark_Heuristics_Enhanced2.h"
 #include "GameTimer.h"
+#include "errno.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -234,8 +235,8 @@ void PrintHelpMessage(char **argv)
 {
 	cout << "Arguments for " << argv[0] << " :" << endl;
 	cout 
-		<< "\t -size <board size> (default: 6)" << endl
+		<< "\t -size <board size> (default: 3)" << endl
 		<< "\t -stones <initial stones in each house> (default: 3)" << endl
-		<< "\t -time <time limit per move, in seconds> (default: 1.0)" << endl
+		<< "\t -time <time limit per move, in seconds> (default: 0.1)" << endl
 		;
 };
