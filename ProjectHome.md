@@ -1,0 +1,1 @@
+The project includes implementations of Kalah game AI player
